@@ -1,0 +1,26 @@
+﻿<Window x:Class="RealEstate.Client.ModalClient"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealEstate.Client"
+        mc:Ignorable="d"
+        Title="Modal client" Height="250" Width="320">
+	<UniformGrid Columns="2" Margin="15 10">
+		<StackPanel>
+			<TextBlock Text="Имя:"/>
+			<TextBox x:Name="FirstName" Text="{Binding human.FirstName}" Style="{StaticResource TB}"/>
+			<TextBlock Text="Отчество:"/>
+			<TextBox x:Name="MiddleName" Text="{Binding human.MiddleName}" Style="{StaticResource TB}"/>
+			<TextBlock Text="Фамилия:"/>
+			<TextBox x:Name="LastName" Text="{Binding human.LastName}" Style="{StaticResource TB}"/>
+			<Button Content="Save" Margin="0 10" Click="Save_Click"/>
+		</StackPanel>
+		<StackPanel>
+			<TextBlock Text="Телефон:"/>
+			<TextBox x:Name="Phone" Text="{Binding Phone}" Style="{StaticResource TB}"/>
+			<TextBlock Text="E-mail:"/>
+			<TextBox x:Name="Email" Text="{Binding Email}" Style="{StaticResource TB}"/>
+		</StackPanel>
+	</UniformGrid>
+</Window>
