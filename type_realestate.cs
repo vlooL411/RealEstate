@@ -12,12 +12,13 @@ namespace RealEstate
     using System;
     using System.Collections.Generic;
     
-    public partial class type_demand
+    public partial class type_realestate
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public type_demand()
+        public type_realestate()
         {
             this.demands = new HashSet<demand>();
+            this.lands = new HashSet<land>();
         }
     
         public byte Id { get; set; }
@@ -25,5 +26,7 @@ namespace RealEstate
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<demand> demands { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<land> lands { get; set; }
     }
 }

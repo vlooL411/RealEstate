@@ -14,10 +14,26 @@ namespace RealEstate
     
     public partial class land
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public land()
+        {
+            this.apartments = new HashSet<apartment>();
+            this.houses = new HashSet<house>();
+            this.supplies = new HashSet<supply>();
+        }
+    
         public int Id { get; set; }
         public Nullable<int> Address_Id { get; set; }
+        public Nullable<byte> TypeId { get; set; }
         public double TotalArea { get; set; }
     
         public virtual Address Address { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<apartment> apartments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<house> houses { get; set; }
+        public virtual type_realestate type_realestate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<supply> supplies { get; set; }
     }
 }

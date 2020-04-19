@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="Id" />
@@ -30,8 +30,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Address_Id" Type="int" />
-          <Property Name="TotalArea" Type="float" Nullable="false" />
+          <Property Name="land_Id" Type="int" />
           <Property Name="Rooms" Type="tinyint" Nullable="false" />
           <Property Name="Floor" Type="tinyint" Nullable="false" />
         </EntityType>
@@ -77,15 +76,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Address_Id" Type="int" />
+          <Property Name="land_Id" Type="int" />
           <Property Name="TotalFloors" Type="float" Nullable="false" />
-          <Property Name="TotalArea" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="human">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="20" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="20" />
@@ -96,6 +94,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Address_Id" Type="int" />
+          <Property Name="TypeId" Type="tinyint" />
           <Property Name="TotalArea" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="land-demand">
@@ -129,7 +128,7 @@
           <Property Name="RealEstateId" Type="int" />
           <Property Name="Buying" Type="tinyint" />
         </EntityType>
-        <EntityType Name="type-demand">
+        <EntityType Name="type-realestate">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -148,15 +147,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_apartments_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+        <Association Name="FK_apartment_land">
+          <End Role="land" Type="Self.land" Multiplicity="0..1" />
           <End Role="apartment" Type="Self.apartment" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Address">
+            <Principal Role="land">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="apartment">
-              <PropertyRef Name="Address_Id" />
+              <PropertyRef Name="land_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -181,18 +180,6 @@
             </Principal>
             <Dependent Role="deal">
               <PropertyRef Name="DemandId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_deal_supply">
-          <End Role="supply" Type="Self.supply" Multiplicity="0..1" />
-          <End Role="deal" Type="Self.deal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="supply">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="deal">
-              <PropertyRef Name="SupplyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -233,10 +220,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_demand_type-demand">
-          <End Role="type-demand" Type="Self.type-demand" Multiplicity="0..1" />
+          <End Role="type-realestate" Type="Self.type-realestate" Multiplicity="0..1" />
           <End Role="demand" Type="Self.demand" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="type-demand">
+            <Principal Role="type-realestate">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="demand">
@@ -244,15 +231,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_houses_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+        <Association Name="FK_house_land">
+          <End Role="land" Type="Self.land" Multiplicity="0..1" />
           <End Role="house" Type="Self.house" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="land">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="house">
+              <PropertyRef Name="land_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_land_Address1">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="land" Type="Self.land" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="house">
+            <Dependent Role="land">
               <PropertyRef Name="Address_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_land_type-realestate">
+          <End Role="type-realestate" Type="Self.type-realestate" Multiplicity="0..1" />
+          <End Role="land" Type="Self.land" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type-realestate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="land">
+              <PropertyRef Name="TypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -268,18 +279,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_lands_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="land" Type="Self.land" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="land">
-              <PropertyRef Name="Address_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_live-demand_land-demand">
           <End Role="land-demand" Type="Self.land-demand" Multiplicity="0..1" />
           <End Role="live-demand" Type="Self.live-demand" Multiplicity="*" />
@@ -292,19 +291,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_supplies_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="supply" Type="Self.supply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="supply">
-              <PropertyRef Name="RealEstateId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_supplies_agents">
+        <Association Name="FK_supply_agent">
           <End Role="agent" Type="Self.agent" Multiplicity="0..1" />
           <End Role="supply" Type="Self.supply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -316,7 +303,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_supplies_clients">
+        <Association Name="FK_supply_client">
           <End Role="client" Type="Self.client" Multiplicity="0..1" />
           <End Role="supply" Type="Self.supply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -325,6 +312,18 @@
             </Principal>
             <Dependent Role="supply">
               <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_supply_land">
+          <End Role="land" Type="Self.land" Multiplicity="0..1" />
+          <End Role="supply" Type="Self.supply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="land">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="supply">
+              <PropertyRef Name="RealEstateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -342,13 +341,13 @@
           <EntitySet Name="land-demand" EntityType="Self.land-demand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="live-demand" EntityType="Self.live-demand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="supply" EntityType="Self.supply" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="type-demand" EntityType="Self.type-demand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="type-realestate" EntityType="Self.type-realestate" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_agent_human" Association="Self.FK_agent_human">
             <End Role="human" EntitySet="human" />
             <End Role="agent" EntitySet="agent" />
           </AssociationSet>
-          <AssociationSet Name="FK_apartments_Address" Association="Self.FK_apartments_Address">
-            <End Role="Address" EntitySet="Address" />
+          <AssociationSet Name="FK_apartment_land" Association="Self.FK_apartment_land">
+            <End Role="land" EntitySet="land" />
             <End Role="apartment" EntitySet="apartment" />
           </AssociationSet>
           <AssociationSet Name="FK_client_human" Association="Self.FK_client_human">
@@ -357,10 +356,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_deal_demand" Association="Self.FK_deal_demand">
             <End Role="demand" EntitySet="demand" />
-            <End Role="deal" EntitySet="deal" />
-          </AssociationSet>
-          <AssociationSet Name="FK_deal_supply" Association="Self.FK_deal_supply">
-            <End Role="supply" EntitySet="supply" />
             <End Role="deal" EntitySet="deal" />
           </AssociationSet>
           <AssociationSet Name="FK_demand_Address" Association="Self.FK_demand_Address">
@@ -376,40 +371,43 @@
             <End Role="demand" EntitySet="demand" />
           </AssociationSet>
           <AssociationSet Name="FK_demand_type-demand" Association="Self.FK_demand_type-demand">
-            <End Role="type-demand" EntitySet="type-demand" />
+            <End Role="type-realestate" EntitySet="type-realestate" />
             <End Role="demand" EntitySet="demand" />
           </AssociationSet>
-          <AssociationSet Name="FK_houses_Address" Association="Self.FK_houses_Address">
-            <End Role="Address" EntitySet="Address" />
+          <AssociationSet Name="FK_house_land" Association="Self.FK_house_land">
+            <End Role="land" EntitySet="land" />
             <End Role="house" EntitySet="house" />
+          </AssociationSet>
+          <AssociationSet Name="FK_land_Address1" Association="Self.FK_land_Address1">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="land" EntitySet="land" />
+          </AssociationSet>
+          <AssociationSet Name="FK_land_type-realestate" Association="Self.FK_land_type-realestate">
+            <End Role="type-realestate" EntitySet="type-realestate" />
+            <End Role="land" EntitySet="land" />
           </AssociationSet>
           <AssociationSet Name="FK_land-demand_demand" Association="Self.FK_land-demand_demand">
             <End Role="demand" EntitySet="demand" />
             <End Role="land-demand" EntitySet="land-demand" />
           </AssociationSet>
-          <AssociationSet Name="FK_lands_Address" Association="Self.FK_lands_Address">
-            <End Role="Address" EntitySet="Address" />
-            <End Role="land" EntitySet="land" />
-          </AssociationSet>
           <AssociationSet Name="FK_live-demand_land-demand" Association="Self.FK_live-demand_land-demand">
             <End Role="land-demand" EntitySet="land-demand" />
             <End Role="live-demand" EntitySet="live-demand" />
           </AssociationSet>
-          <AssociationSet Name="FK_supplies_Address" Association="Self.FK_supplies_Address">
-            <End Role="Address" EntitySet="Address" />
-            <End Role="supply" EntitySet="supply" />
-          </AssociationSet>
-          <AssociationSet Name="FK_supplies_agents" Association="Self.FK_supplies_agents">
+          <AssociationSet Name="FK_supply_agent" Association="Self.FK_supply_agent">
             <End Role="agent" EntitySet="agent" />
             <End Role="supply" EntitySet="supply" />
           </AssociationSet>
-          <AssociationSet Name="FK_supplies_clients" Association="Self.FK_supplies_clients">
+          <AssociationSet Name="FK_supply_client" Association="Self.FK_supply_client">
             <End Role="client" EntitySet="client" />
             <End Role="supply" EntitySet="supply" />
           </AssociationSet>
+          <AssociationSet Name="FK_supply_land" Association="Self.FK_supply_land">
+            <End Role="land" EntitySet="land" />
+            <End Role="supply" EntitySet="supply" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RealEstateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -424,11 +422,8 @@
           <Property Name="Number" Type="Int32" />
           <Property Name="Coordinate_latitude" Type="Double" />
           <Property Name="Coordinate_longitude" Type="Double" />
-          <NavigationProperty Name="apartments" Relationship="Self.FK_apartments_Address" FromRole="Address" ToRole="apartment" />
           <NavigationProperty Name="demands" Relationship="Self.FK_demand_Address" FromRole="Address" ToRole="demand" />
-          <NavigationProperty Name="houses" Relationship="Self.FK_houses_Address" FromRole="Address" ToRole="house" />
-          <NavigationProperty Name="lands" Relationship="Self.FK_lands_Address" FromRole="Address" ToRole="land" />
-          <NavigationProperty Name="supplies" Relationship="Self.FK_supplies_Address" FromRole="Address" ToRole="supply" />
+          <NavigationProperty Name="lands" Relationship="Self.FK_land_Address1" FromRole="Address" ToRole="land" />
         </EntityType>
         <EntityType Name="agent">
           <Key>
@@ -439,18 +434,17 @@
           <Property Name="DealShare" Type="Double" Nullable="false" />
           <NavigationProperty Name="human" Relationship="Self.FK_agent_human" FromRole="agent" ToRole="human" />
           <NavigationProperty Name="demands" Relationship="Self.FK_demand_agent" FromRole="agent" ToRole="demand" />
-          <NavigationProperty Name="supplies" Relationship="Self.FK_supplies_agents" FromRole="agent" ToRole="supply" />
+          <NavigationProperty Name="supplies" Relationship="Self.FK_supply_agent" FromRole="agent" ToRole="supply" />
         </EntityType>
         <EntityType Name="apartment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Address_Id" Type="Int32" />
-          <Property Name="TotalArea" Type="Double" Nullable="false" />
+          <Property Name="land_Id" Type="Int32" />
           <Property Name="Rooms" Type="Byte" Nullable="false" />
           <Property Name="Floor" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_apartments_Address" FromRole="apartment" ToRole="Address" />
+          <NavigationProperty Name="land" Relationship="Self.FK_apartment_land" FromRole="apartment" ToRole="land" />
         </EntityType>
         <EntityType Name="client">
           <Key>
@@ -462,7 +456,7 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="human" Relationship="Self.FK_client_human" FromRole="client" ToRole="human" />
           <NavigationProperty Name="demands" Relationship="Self.FK_demand_client" FromRole="client" ToRole="demand" />
-          <NavigationProperty Name="supplies" Relationship="Self.FK_supplies_clients" FromRole="client" ToRole="supply" />
+          <NavigationProperty Name="supplies" Relationship="Self.FK_supply_client" FromRole="client" ToRole="supply" />
         </EntityType>
         <EntityType Name="deal">
           <Key>
@@ -472,7 +466,6 @@
           <Property Name="DemandId" Type="Int32" />
           <Property Name="SupplyId" Type="Int32" />
           <NavigationProperty Name="demand" Relationship="Self.FK_deal_demand" FromRole="deal" ToRole="demand" />
-          <NavigationProperty Name="supply" Relationship="Self.FK_deal_supply" FromRole="deal" ToRole="supply" />
         </EntityType>
         <EntityType Name="demand">
           <Key>
@@ -489,7 +482,7 @@
           <NavigationProperty Name="agent" Relationship="Self.FK_demand_agent" FromRole="demand" ToRole="agent" />
           <NavigationProperty Name="client" Relationship="Self.FK_demand_client" FromRole="demand" ToRole="client" />
           <NavigationProperty Name="deals" Relationship="Self.FK_deal_demand" FromRole="demand" ToRole="deal" />
-          <NavigationProperty Name="type_demand" Relationship="Self.FK_demand_type_demand" FromRole="demand" ToRole="type_demand" />
+          <NavigationProperty Name="type_realestate" Relationship="Self.FK_demand_type_demand" FromRole="demand" ToRole="type_realestate" />
           <NavigationProperty Name="land_demand" Relationship="Self.FK_land_demand_demand" FromRole="demand" ToRole="land_demand" />
         </EntityType>
         <EntityType Name="district">
@@ -505,10 +498,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Address_Id" Type="Int32" />
+          <Property Name="land_Id" Type="Int32" />
           <Property Name="TotalFloors" Type="Double" Nullable="false" />
-          <Property Name="TotalArea" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_houses_Address" FromRole="house" ToRole="Address" />
+          <NavigationProperty Name="land" Relationship="Self.FK_house_land" FromRole="house" ToRole="land" />
         </EntityType>
         <EntityType Name="human">
           <Key>
@@ -527,8 +519,13 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Address_Id" Type="Int32" />
+          <Property Name="TypeId" Type="Byte" />
           <Property Name="TotalArea" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_lands_Address" FromRole="land" ToRole="Address" />
+          <NavigationProperty Name="Address" Relationship="Self.FK_land_Address1" FromRole="land" ToRole="Address" />
+          <NavigationProperty Name="apartments" Relationship="Self.FK_apartment_land" FromRole="land" ToRole="apartment" />
+          <NavigationProperty Name="houses" Relationship="Self.FK_house_land" FromRole="land" ToRole="house" />
+          <NavigationProperty Name="type_realestate" Relationship="Self.FK_land_type_realestate" FromRole="land" ToRole="type_realestate" />
+          <NavigationProperty Name="supplies" Relationship="Self.FK_supply_land" FromRole="land" ToRole="supply" />
         </EntityType>
         <EntityType Name="land_demand">
           <Key>
@@ -563,31 +560,19 @@
           <Property Name="ClientId" Type="Int32" />
           <Property Name="RealEstateId" Type="Int32" />
           <Property Name="Buying" Type="Byte" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_supplies_Address" FromRole="supply" ToRole="Address" />
-          <NavigationProperty Name="agent" Relationship="Self.FK_supplies_agents" FromRole="supply" ToRole="agent" />
-          <NavigationProperty Name="client" Relationship="Self.FK_supplies_clients" FromRole="supply" ToRole="client" />
-          <NavigationProperty Name="deals" Relationship="Self.FK_deal_supply" FromRole="supply" ToRole="deal" />
+          <NavigationProperty Name="agent" Relationship="Self.FK_supply_agent" FromRole="supply" ToRole="agent" />
+          <NavigationProperty Name="client" Relationship="Self.FK_supply_client" FromRole="supply" ToRole="client" />
+          <NavigationProperty Name="land" Relationship="Self.FK_supply_land" FromRole="supply" ToRole="land" />
         </EntityType>
-        <EntityType Name="type_demand">
+        <EntityType Name="type_realestate">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Byte" Nullable="false" />
           <Property Name="Type" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="demands" Relationship="Self.FK_demand_type_demand" FromRole="type_demand" ToRole="demand" />
+          <NavigationProperty Name="demands" Relationship="Self.FK_demand_type_demand" FromRole="type_realestate" ToRole="demand" />
+          <NavigationProperty Name="lands" Relationship="Self.FK_land_type_realestate" FromRole="type_realestate" ToRole="land" />
         </EntityType>
-        <Association Name="FK_apartments_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="apartment" Type="Self.apartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="apartment">
-              <PropertyRef Name="Address_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_demand_Address">
           <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
           <End Role="demand" Type="Self.demand" Multiplicity="*" />
@@ -600,19 +585,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_houses_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="house" Type="Self.house" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="house">
-              <PropertyRef Name="Address_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_lands_Address">
+        <Association Name="FK_land_Address1">
           <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
           <End Role="land" Type="Self.land" Multiplicity="*" />
           <ReferentialConstraint>
@@ -621,18 +594,6 @@
             </Principal>
             <Dependent Role="land">
               <PropertyRef Name="Address_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_supplies_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="supply" Type="Self.supply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="supply">
-              <PropertyRef Name="RealEstateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -660,7 +621,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_supplies_agents">
+        <Association Name="FK_supply_agent">
           <End Role="agent" Type="Self.agent" Multiplicity="0..1" />
           <End Role="supply" Type="Self.supply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -669,6 +630,18 @@
             </Principal>
             <Dependent Role="supply">
               <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_apartment_land">
+          <End Role="land" Type="Self.land" Multiplicity="0..1" />
+          <End Role="apartment" Type="Self.apartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="land">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="apartment">
+              <PropertyRef Name="land_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -696,7 +669,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_supplies_clients">
+        <Association Name="FK_supply_client">
           <End Role="client" Type="Self.client" Multiplicity="0..1" />
           <End Role="supply" Type="Self.supply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -720,23 +693,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_deal_supply">
-          <End Role="supply" Type="Self.supply" Multiplicity="0..1" />
-          <End Role="deal" Type="Self.deal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="supply">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="deal">
-              <PropertyRef Name="SupplyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_demand_type_demand">
-          <End Role="type_demand" Type="Self.type_demand" Multiplicity="0..1" />
+          <End Role="type_realestate" Type="Self.type_realestate" Multiplicity="0..1" />
           <End Role="demand" Type="Self.demand" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="type_demand">
+            <Principal Role="type_realestate">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="demand">
@@ -753,6 +714,42 @@
             </Principal>
             <Dependent Role="land_demand">
               <PropertyRef Name="demand_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_house_land">
+          <End Role="land" Type="Self.land" Multiplicity="0..1" />
+          <End Role="house" Type="Self.house" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="land">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="house">
+              <PropertyRef Name="land_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_land_type_realestate">
+          <End Role="type_realestate" Type="Self.type_realestate" Multiplicity="0..1" />
+          <End Role="land" Type="Self.land" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_realestate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="land">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_supply_land">
+          <End Role="land" Type="Self.land" Multiplicity="0..1" />
+          <End Role="supply" Type="Self.supply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="land">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="supply">
+              <PropertyRef Name="RealEstateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -782,26 +779,14 @@
           <EntitySet Name="land_demand" EntityType="Self.land_demand" />
           <EntitySet Name="live_demand" EntityType="Self.live_demand" />
           <EntitySet Name="supplies" EntityType="Self.supply" />
-          <EntitySet Name="type_demand" EntityType="Self.type_demand" />
-          <AssociationSet Name="FK_apartments_Address" Association="Self.FK_apartments_Address">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="apartment" EntitySet="apartments" />
-          </AssociationSet>
+          <EntitySet Name="type_realestate" EntityType="Self.type_realestate" />
           <AssociationSet Name="FK_demand_Address" Association="Self.FK_demand_Address">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="demand" EntitySet="demands" />
           </AssociationSet>
-          <AssociationSet Name="FK_houses_Address" Association="Self.FK_houses_Address">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="house" EntitySet="houses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_lands_Address" Association="Self.FK_lands_Address">
+          <AssociationSet Name="FK_land_Address1" Association="Self.FK_land_Address1">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="land" EntitySet="lands" />
-          </AssociationSet>
-          <AssociationSet Name="FK_supplies_Address" Association="Self.FK_supplies_Address">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="supply" EntitySet="supplies" />
           </AssociationSet>
           <AssociationSet Name="FK_agent_human" Association="Self.FK_agent_human">
             <End Role="human" EntitySet="humen" />
@@ -811,9 +796,13 @@
             <End Role="agent" EntitySet="agents" />
             <End Role="demand" EntitySet="demands" />
           </AssociationSet>
-          <AssociationSet Name="FK_supplies_agents" Association="Self.FK_supplies_agents">
+          <AssociationSet Name="FK_supply_agent" Association="Self.FK_supply_agent">
             <End Role="agent" EntitySet="agents" />
             <End Role="supply" EntitySet="supplies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_apartment_land" Association="Self.FK_apartment_land">
+            <End Role="land" EntitySet="lands" />
+            <End Role="apartment" EntitySet="apartments" />
           </AssociationSet>
           <AssociationSet Name="FK_client_human" Association="Self.FK_client_human">
             <End Role="human" EntitySet="humen" />
@@ -823,7 +812,7 @@
             <End Role="client" EntitySet="clients" />
             <End Role="demand" EntitySet="demands" />
           </AssociationSet>
-          <AssociationSet Name="FK_supplies_clients" Association="Self.FK_supplies_clients">
+          <AssociationSet Name="FK_supply_client" Association="Self.FK_supply_client">
             <End Role="client" EntitySet="clients" />
             <End Role="supply" EntitySet="supplies" />
           </AssociationSet>
@@ -831,17 +820,25 @@
             <End Role="demand" EntitySet="demands" />
             <End Role="deal" EntitySet="deals" />
           </AssociationSet>
-          <AssociationSet Name="FK_deal_supply" Association="Self.FK_deal_supply">
-            <End Role="supply" EntitySet="supplies" />
-            <End Role="deal" EntitySet="deals" />
-          </AssociationSet>
           <AssociationSet Name="FK_demand_type_demand" Association="Self.FK_demand_type_demand">
-            <End Role="type_demand" EntitySet="type_demand" />
+            <End Role="type_realestate" EntitySet="type_realestate" />
             <End Role="demand" EntitySet="demands" />
           </AssociationSet>
           <AssociationSet Name="FK_land_demand_demand" Association="Self.FK_land_demand_demand">
             <End Role="demand" EntitySet="demands" />
             <End Role="land_demand" EntitySet="land_demand" />
+          </AssociationSet>
+          <AssociationSet Name="FK_house_land" Association="Self.FK_house_land">
+            <End Role="land" EntitySet="lands" />
+            <End Role="house" EntitySet="houses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_land_type_realestate" Association="Self.FK_land_type_realestate">
+            <End Role="type_realestate" EntitySet="type_realestate" />
+            <End Role="land" EntitySet="lands" />
+          </AssociationSet>
+          <AssociationSet Name="FK_supply_land" Association="Self.FK_supply_land">
+            <End Role="land" EntitySet="lands" />
+            <End Role="supply" EntitySet="supplies" />
           </AssociationSet>
           <AssociationSet Name="FK_live_demand_land_demand" Association="Self.FK_live_demand_land_demand">
             <End Role="land_demand" EntitySet="land_demand" />
@@ -880,8 +877,7 @@
             <EntityTypeMapping TypeName="RealEstateModel.apartment">
               <MappingFragment StoreEntitySet="apartment">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Address_Id" ColumnName="Address_Id" />
-                <ScalarProperty Name="TotalArea" ColumnName="TotalArea" />
+                <ScalarProperty Name="land_Id" ColumnName="land_Id" />
                 <ScalarProperty Name="Rooms" ColumnName="Rooms" />
                 <ScalarProperty Name="Floor" ColumnName="Floor" />
               </MappingFragment>
@@ -932,9 +928,8 @@
             <EntityTypeMapping TypeName="RealEstateModel.house">
               <MappingFragment StoreEntitySet="house">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Address_Id" ColumnName="Address_Id" />
+                <ScalarProperty Name="land_Id" ColumnName="land_Id" />
                 <ScalarProperty Name="TotalFloors" ColumnName="TotalFloors" />
-                <ScalarProperty Name="TotalArea" ColumnName="TotalArea" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -953,6 +948,7 @@
               <MappingFragment StoreEntitySet="land">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Address_Id" ColumnName="Address_Id" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="TotalArea" ColumnName="TotalArea" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -991,9 +987,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="type_demand">
-            <EntityTypeMapping TypeName="RealEstateModel.type_demand">
-              <MappingFragment StoreEntitySet="type-demand">
+          <EntitySetMapping Name="type_realestate">
+            <EntityTypeMapping TypeName="RealEstateModel.type_realestate">
+              <MappingFragment StoreEntitySet="type-realestate">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
               </MappingFragment>

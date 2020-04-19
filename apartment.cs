@@ -15,11 +15,10 @@ namespace RealEstate
     public partial class apartment
     {
         public int Id { get; set; }
-        public Nullable<int> Address_Id { get; set; }
-        public double TotalArea { get; set; }
+        public Nullable<int> land_Id { get; set; }
         public byte Rooms { get; set; }
         public byte Floor { get; set; }
     
-        public virtual Address Address { get; set; }
+        public virtual land land { get; set; }
     }
 }

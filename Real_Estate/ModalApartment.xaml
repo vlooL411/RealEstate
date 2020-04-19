@@ -3,13 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RealEstate.Real_Estate"
-        mc:Ignorable="d"
-		WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Modal Apartment" Height="290" Width="500">
 	<StackPanel>
 		<TextBlock Text="Аддресс" Margin="20 5"/>
-		<UniformGrid DataContext="{Binding Address}" Columns="4" Rows="2" Width="470" Height="55" Margin="5 0" HorizontalAlignment="Left">
+		<UniformGrid DataContext="{Binding land.Address}" Columns="4" Rows="2" Width="470" Height="55" Margin="5 0" HorizontalAlignment="Left">
 			<TextBlock Text="Город" VerticalAlignment="Bottom"/>
 			<TextBlock Text="Улица" VerticalAlignment="Bottom"/>
 			<TextBlock Text="Дом" VerticalAlignment="Bottom"/>
@@ -22,7 +20,7 @@
 		</UniformGrid>
 
 		<TextBlock Text="Координаты" Margin="20 5"/>
-		<UniformGrid DataContext="{Binding Address}" Columns="2" Rows="2" Height="55" Width="250" HorizontalAlignment="Left" Margin="5 0">
+		<UniformGrid DataContext="{Binding land.Address}" Columns="2" Rows="2" Height="55" Width="250" HorizontalAlignment="Left" Margin="5 0">
 			<TextBlock Text="Долгота"/>
 			<TextBlock Text="Широта"/>
 
@@ -35,7 +33,7 @@
 			<TextBlock Text="Комнаты" VerticalAlignment="Bottom"/>
 			<TextBlock Text="Этаж" VerticalAlignment="Bottom"/>
 
-			<TextBox x:Name="TotalArea" Text="{Binding TotalArea}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
+			<TextBox x:Name="TotalArea" Text="{Binding land.TotalArea}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
 			<TextBox x:Name="Rooms" Text="{Binding Rooms}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
 			<TextBox x:Name="Floor" Text="{Binding Floor}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
 		</UniformGrid>

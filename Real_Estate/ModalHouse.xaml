@@ -9,7 +9,7 @@
         Title="Modal House" Height="290" Width="500">
 	<StackPanel>
 		<TextBlock Text="Аддресс" Margin="20 5"/>
-		<UniformGrid DataContext="{Binding Address}" Columns="4" Rows="2" Width="470" Height="55" Margin="5 0" HorizontalAlignment="Left">
+		<UniformGrid DataContext="{Binding land.Address}" Columns="4" Rows="2" Width="470" Height="55" Margin="5 0" HorizontalAlignment="Left">
 			<TextBlock Text="Город" VerticalAlignment="Bottom"/>
 			<TextBlock Text="Улица" VerticalAlignment="Bottom"/>
 			<TextBlock Text="Дом" VerticalAlignment="Bottom"/>
@@ -22,7 +22,7 @@
 		</UniformGrid>
 
 		<TextBlock Text="Координаты" Margin="20 5"/>
-		<UniformGrid DataContext="{Binding Address}" Columns="2" Rows="2" Height="55" Width="250" HorizontalAlignment="Left" Margin="5 0">
+		<UniformGrid DataContext="{Binding land.Address}" Columns="2" Rows="2" Height="55" Width="250" HorizontalAlignment="Left" Margin="5 0">
 			<TextBlock Text="Долгота"/>
 			<TextBlock Text="Широта"/>
 
@@ -30,11 +30,11 @@
 			<TextBox x:Name="latitude" Text="{Binding Coordinate_latitude}" Style="{StaticResource TB}"/>
 		</UniformGrid>
 
-		<UniformGrid DataContext="{Binding Address}" Columns="2" Rows="2" Width="250" Height="55" Margin="5 0" HorizontalAlignment="Left">
+		<UniformGrid Columns="2" Rows="2" Width="250" Height="55" Margin="5 0" HorizontalAlignment="Left">
 			<TextBlock Text="Абсолютная площадь" VerticalAlignment="Bottom"/>
 			<TextBlock Text="Этажи" VerticalAlignment="Bottom"/>
 
-			<TextBox x:Name="TotalArea" Text="{Binding TotalArea}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
+			<TextBox x:Name="TotalArea" Text="{Binding land.TotalArea}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
 			<TextBox x:Name="Floors" Text="{Binding TotalFloors}" Style="{StaticResource TB}" VerticalAlignment="Top"/>
 		</UniformGrid>
 

@@ -38,6 +38,6 @@ namespace RealEstate
         public virtual DbSet<land_demand> land_demand { get; set; }
         public virtual DbSet<live_demand> live_demand { get; set; }
         public virtual DbSet<supply> supplies { get; set; }
-        public virtual DbSet<type_demand> type_demand { get; set; }
+        public virtual DbSet<type_realestate> type_realestate { get; set; }
     }
 }

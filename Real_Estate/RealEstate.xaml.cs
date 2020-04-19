@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 
 namespace RealEstate.Real_Estate
 {
@@ -12,37 +10,34 @@ namespace RealEstate.Real_Estate
         public Real_Estate()
         {
             InitializeComponent();
-            var realEstates = new List<object>();
-            realEstates.AddRange(realEstate.apartments);
-            realEstates.AddRange(realEstate.houses);
-            realEstates.AddRange(realEstate.lands);
-            RealEstates.ItemsSource = realEstates;
+            Query.query(() => RealEstates.ItemsSource = Query.real.lands.ToList(), "Загрузка недвижимости");
         }
-        void Add_Click(object o, RoutedEventArgs e)
-        {
-            switch ((o as Button).Tag)
-            {
-                case "apartment": new ModalApartment().ShowDialog(); break;
-                case "house": new ModalHouse().ShowDialog(); break;
-                case "land": new ModalLand().ShowDialog(); break;
-            }
-        }
+        void AddApartment_Click(object o, RoutedEventArgs e) => new ModalApartment(new apartment()).ShowDialog();
+        void AddHouse_Click(object o, RoutedEventArgs e) => new ModalHouse(new house()).ShowDialog();
+        void AddLand_Click(object o, RoutedEventArgs e) => new ModalLand(new land()).ShowDialog();
         void Remove_Click(object o, RoutedEventArgs e)
         {
-            return;
-            if (o is apartment a) realEstate.apartments.Remove(a);
-            if (o is house h) realEstate.houses.Remove(h);
-            if (o is land l) realEstate.lands.Remove(l);
+            if (RealEstates.SelectedItem == null) { MessageBox.Show("Выберите элемент!!!", "Внимание"); return; }
+            if (MessageBox.Show("Вы хотите удалите?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                Query.query(() =>
+                {
+                    var land = RealEstates.SelectedItem as land;
+                    land.houses.Clear();
+                    land.apartments.Clear();
+                    land.supplies.Clear();
+                    Query.real.lands.Remove(land);
+                }, "Удаление недвижимости");
         }
         void Edit_Click(object o, RoutedEventArgs e)
         {
             if (RealEstates.SelectedItem == null) return;
-            if (RealEstates.SelectedItem is apartment a) 
-                new ModalApartment() { DataContext = a }.ShowDialog();
-            else if (RealEstates.SelectedItem is house h) 
-                new ModalHouse() { DataContext = h }.ShowDialog();
-            else if (RealEstates.SelectedItem is land l) 
-                new ModalLand() { DataContext = l }.ShowDialog();
+
+            if (RealEstates.SelectedItem is apartment a)
+                new ModalApartment(a).ShowDialog();
+            else if (RealEstates.SelectedItem is house h)
+                new ModalHouse(h).ShowDialog();
+            else if (RealEstates.SelectedItem is land l)
+                new ModalLand(l).ShowDialog();
         }
     }
 }

@@ -12,15 +12,9 @@ namespace RealEstate.Converter
                 return $"{agent.human.FirstName} {agent.human.MiddleName} {agent.human.LastName}";
             if (value is client client)
                 return $"{client.human.FirstName} {client.human.MiddleName} {client.human.LastName}";
-            
             if (value is Address a)
                 return $"{a.City}, {a.Street}, {a.House}, {a.Number}";
-
-            if (value is apartment) return "Квартира";
-            if (value is house) return "Дом";
-            if (value is land) return "Земля";
-
-            if (value is type_demand type)
+            if (value is type_realestate type)
                 switch (type.Id)
                 {
                     case 0: return "Земля";

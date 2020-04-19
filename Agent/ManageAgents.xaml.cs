@@ -14,19 +14,14 @@ namespace RealEstate.Agent
         void Edit_Click(object o, RoutedEventArgs e)
         {
             if (Humans.SelectedItem == null) return;
-            new ModalAgent() { DataContext = Humans.SelectedItem }.ShowDialog();
+            new ModalAgent(Humans.SelectedItem as agent).ShowDialog();
         }
-
-        void Add_Click(object o, RoutedEventArgs e)
-        {
-            return;
-            realEstate.agents.Add(new agent());
-        }
+        void Add_Click(object o, RoutedEventArgs e) => new ModalAgent(new agent()).ShowDialog();
         void Remove_Click(object o, RoutedEventArgs e)
         {
-            return;
-            if (Humans.SelectedItem == null) return;
-            realEstate.agents.Remove(Humans.SelectedItem as agent);
+            if (Humans.SelectedItem == null) { MessageBox.Show("Выберите элемент!!!", "Внимание"); return; }
+            if (MessageBox.Show("Вы хотите удалите?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                Query.query(() => realEstate.agents.Add(Humans.SelectedItem as agent), "Удаление клиента");
         }
     }
 }

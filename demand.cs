@@ -34,7 +34,7 @@ namespace RealEstate
         public virtual client client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<deal> deals { get; set; }
-        public virtual type_demand type_demand { get; set; }
+        public virtual type_realestate type_realestate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<land_demand> land_demand { get; set; }
     }

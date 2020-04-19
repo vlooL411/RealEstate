@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Converter="clr-namespace:RealEstate.Converter"
-        mc:Ignorable="d"
-		WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Real Estate" Height="470" Width="900">
 	<Window.Resources>
 		<Converter:ModalRealEstate x:Key="ModalRealEstate"/>
@@ -21,7 +20,7 @@
 			<ListView x:Name="RealEstates" DockPanel.Dock="Top">
 				<ListView.View>
 					<GridView>
-						<GridViewColumn Header="Недвижимость" DisplayMemberBinding="{Binding Converter={StaticResource BDData}, Mode=OneWay}"/>
+						<GridViewColumn Header="Недвижимость" DisplayMemberBinding="{Binding type_realestate, Converter={StaticResource BDData}}"/>
 						<GridViewColumn Header="Город" DisplayMemberBinding="{Binding Address.City}"/>
 						<GridViewColumn Header="Улица" DisplayMemberBinding="{Binding Address.Street}"/>
 						<GridViewColumn Header="Дом" DisplayMemberBinding="{Binding Address.House}"/>
@@ -39,9 +38,9 @@
 					<RowDefinition/>
 					<RowDefinition/>
 				</Grid.RowDefinitions>
-				<Button Content="Добавить квартиру" Tag="apartment" Click="Add_Click" Margin="4"/>
-				<Button Content="Добавить дом" Grid.Row="1" Tag="house" Click="Add_Click" Margin="4"/>
-				<Button Content="Добавить land" Grid.Row="2" Tag="land" Click="Add_Click" Margin="4"/>
+				<Button Content="Добавить квартиру" Click="AddApartment_Click" Margin="4"/>
+				<Button Content="Добавить дом" Grid.Row="1" Tag="house" Click="AddHouse_Click" Margin="4"/>
+				<Button Content="Добавить землю" Grid.Row="2" Tag="land" Click="AddLand_Click" Margin="4"/>
 				<Button Content="Удалить" Grid.Column="1" Click="Remove_Click" Margin="4"/>
 			</Grid>
 		</DockPanel>

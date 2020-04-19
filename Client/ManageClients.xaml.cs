@@ -14,18 +14,14 @@ namespace RealEstate.Client
         void Edit_Click(object o, RoutedEventArgs e)
         {
             if (Humans.SelectedItem == null) return;
-            new ModalClient() { DataContext = Humans.SelectedItem }.ShowDialog();
+            new ModalClient(Humans.SelectedItem as client).ShowDialog();
         }
-        void Add_Click(object o, RoutedEventArgs e)
-        {
-            return;
-            realEstate.clients.Add(new client());
-        }
+        void Add_Click(object o, RoutedEventArgs e) => new ModalClient(new client()).ShowDialog();
         void Remove_Click(object o, RoutedEventArgs e)
         {
-            return;
-            if (Humans.SelectedItem == null) return;
-            realEstate.clients.Remove(Humans.SelectedItem as client);
+            if (Humans.SelectedItem == null) { MessageBox.Show("Выберите элемент!!!", "Внимание"); return; }
+            if (MessageBox.Show("Вы хотите удалите?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                Query.query(() => realEstate.clients.Add(Humans.SelectedItem as client), "Удаление клиента");
         }
     }
 }
