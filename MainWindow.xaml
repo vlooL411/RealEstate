@@ -25,8 +25,8 @@
 			<Button Content="Агенты" Click="Agents_Click" Style="{StaticResource BtnStyle}"/>
 			<Button Content="Клиенты" Click="Clients_Click" Style="{StaticResource BtnStyle}"/>
 			<Button Content="Недвижимость" Click="RealEstate_Click" Style="{StaticResource BtnStyle}"/>
-			<Button Content="Предложения" Style="{StaticResource BtnStyle}"/>
-			<Button Content="demands" Style="{StaticResource BtnStyle}"/>
+			<Button Content="Предложения" Click="Supplies_Click" Style="{StaticResource BtnStyle}"/>
+			<Button Content="Потребности" Click="Demand_Click" Style="{StaticResource BtnStyle}"/>
 			<Button Content="Дела" Style="{StaticResource BtnStyle}"/>
 		</StackPanel>
 	</StackPanel>

@@ -17,8 +17,8 @@ namespace RealEstate
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Address()
         {
-            this.demands = new HashSet<demand>();
             this.lands = new HashSet<land>();
+            this.land_demand = new HashSet<land_demand>();
         }
     
         public int Id { get; set; }
@@ -30,8 +30,8 @@ namespace RealEstate
         public Nullable<double> Coordinate_longitude { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<demand> demands { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<land> lands { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<land_demand> land_demand { get; set; }
     }
 }

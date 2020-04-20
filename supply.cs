@@ -14,15 +14,22 @@ namespace RealEstate
     
     public partial class supply
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public supply()
+        {
+            this.deals = new HashSet<deal>();
+        }
+    
         public int Id { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> AgentId { get; set; }
         public Nullable<int> ClientId { get; set; }
         public Nullable<int> RealEstateId { get; set; }
-        public Nullable<byte> Buying { get; set; }
     
         public virtual agent agent { get; set; }
         public virtual client client { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<deal> deals { get; set; }
         public virtual land land { get; set; }
     }
 }

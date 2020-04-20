@@ -1,0 +1,45 @@
+﻿<Window x:Class="RealEstate.Supply.ModalSupply"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:Converter="clr-namespace:RealEstate.Converter"
+		mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="ModalSupply" Height="450" Width="800">
+	<Window.Resources>
+		<Converter:BDData x:Key="BDData"/>
+	</Window.Resources>
+	<StackPanel Margin="5 7">
+		<UniformGrid Columns="3" MinWidth="470" HorizontalAlignment="Left">
+			<TextBlock Text="Клиент" VerticalAlignment="Bottom"/>
+			<TextBlock Text="Агент" VerticalAlignment="Bottom"/>
+			<TextBlock Text="Цена" VerticalAlignment="Bottom"/>
+
+			<ComboBox x:Name="client" MinWidth="100" Margin="5 2" HorizontalAlignment="Left" SelectedItem="{Binding client}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Converter={StaticResource BDData}}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<ComboBox x:Name="agent" Margin="5 2" MinWidth="100" HorizontalAlignment="Left"  SelectedItem="{Binding agent}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Converter={StaticResource BDData}}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+
+			<TextBox x:Name="price" Text="{Binding Price}" Style="{StaticResource TB}"/>
+		</UniformGrid>
+		<TextBlock Text="Недвижимость" VerticalAlignment="Bottom"/>
+		<ComboBox x:Name="realestate" Margin="5 2" MinWidth="100" HorizontalAlignment="Left" SelectedItem="{Binding land}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Converter={StaticResource BDData}}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		<Button Content="Сохранить" Click="Save_Click" HorizontalAlignment="Left" Margin="4 5"/>
+	</StackPanel>
+</Window>

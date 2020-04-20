@@ -19,5 +19,6 @@ namespace RealEstate
         public Nullable<int> SupplyId { get; set; }
     
         public virtual demand demand { get; set; }
+        public virtual supply supply { get; set; }
     }
 }

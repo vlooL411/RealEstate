@@ -17,25 +17,22 @@ namespace RealEstate
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public demand()
         {
+            this.MinPrice = 0m;
+            this.MaxPrice = 0m;
             this.deals = new HashSet<deal>();
-            this.land_demand = new HashSet<land_demand>();
         }
     
         public int Id { get; set; }
-        public Nullable<byte> TypeId { get; set; }
-        public Nullable<int> Address_Id { get; set; }
-        public Nullable<int> Agent_Id { get; set; }
-        public Nullable<int> Client_Id { get; set; }
+        public Nullable<int> landDId { get; set; }
+        public Nullable<int> AgentId { get; set; }
+        public Nullable<int> ClientId { get; set; }
         public Nullable<decimal> MinPrice { get; set; }
         public Nullable<decimal> MaxPrice { get; set; }
     
-        public virtual Address Address { get; set; }
         public virtual agent agent { get; set; }
         public virtual client client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<deal> deals { get; set; }
-        public virtual type_realestate type_realestate { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<land_demand> land_demand { get; set; }
+        public virtual land_demand land_demand { get; set; }
     }
 }

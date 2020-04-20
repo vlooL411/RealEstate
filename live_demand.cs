@@ -14,6 +14,15 @@ namespace RealEstate
     
     public partial class live_demand
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public live_demand()
+        {
+            this.MinFloor = 0;
+            this.MaxFloor = 0;
+            this.MinRoom = 0;
+            this.MaxRoom = 0;
+        }
+    
         public int Id { get; set; }
         public Nullable<int> landDemandId { get; set; }
         public Nullable<int> MinFloor { get; set; }

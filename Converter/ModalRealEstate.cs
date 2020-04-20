@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
@@ -9,9 +10,8 @@ namespace RealEstate.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is land) return Visibility.Collapsed;
-            if (value is apartment) return Visibility.Visible;
-            if (value is house && (string)parameter == "room") return Visibility.Collapsed;
+            if (value is land l)
+                if (l.TypeId == 0 || l.TypeId == 1 && (string)parameter == "room") return Visibility.Collapsed;
             return Visibility.Visible;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
@@ -20,10 +20,18 @@ namespace RealEstate.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is house h && (string)parameter == "floor") return h.TotalFloors;
-            if (value is apartment a && (string)parameter == "floor") return a.Floor;
-            if (value is house && (string)parameter == "floorString") return "Этажи";
-            return "Этаж";
+            if (value is land l)
+                switch (l?.TypeId)
+                {
+                    case 1:
+                        if ((string)parameter == "floor") return l.houses?.First()?.TotalFloors;
+                        if ((string)parameter == "floorString") return "Этажи";
+                        break;
+                    case 2:
+                        if ((string)parameter == "floor") return l.apartments?.First()?.Floor;
+                        return "Этаж";
+                }
+            return null;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }

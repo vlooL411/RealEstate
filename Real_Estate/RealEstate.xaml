@@ -1,4 +1,4 @@
-﻿<Window x:Class="RealEstate.Real_Estate.Real_Estate"
+﻿<Window x:Class="RealEstate.Real_Estate.ManageRealEstate"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -38,9 +38,9 @@
 					<RowDefinition/>
 					<RowDefinition/>
 				</Grid.RowDefinitions>
-				<Button Content="Добавить квартиру" Click="AddApartment_Click" Margin="4"/>
-				<Button Content="Добавить дом" Grid.Row="1" Tag="house" Click="AddHouse_Click" Margin="4"/>
-				<Button Content="Добавить землю" Grid.Row="2" Tag="land" Click="AddLand_Click" Margin="4"/>
+				<Button Content="Добавить квартиру" Click="Add_Click" Margin="4"/>
+				<Button Content="Добавить дом" Grid.Row="1" Tag="house" Click="Add_Click" Margin="4"/>
+				<Button Content="Добавить землю" Grid.Row="2" Tag="land" Click="Add_Click" Margin="4"/>
 				<Button Content="Удалить" Grid.Column="1" Click="Remove_Click" Margin="4"/>
 			</Grid>
 		</DockPanel>
